@@ -1,0 +1,43 @@
+# =======================
+# .NET / C# build output
+# =======================
+**/bin/
+**/obj/
+*.dll
+*.exe
+*.app
+*.log
+
+# Visual Studio / Rider
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / JetBrains
+.idea/
+*.iml
+
+# =======================
+# Playwright artifacts
+# =======================
+**/.playwright/
+**/playwright-report/
+**/test-results/
+**/blob-report/
+
+# =======================
+# OS-specific files
+# =======================
+.DS_Store
+Thumbs.db
+
+# =======================
+# Other
+# =======================
+*.vspscc
+*_i.c
+*_p.c
+*.cache
+*.pdb
+*.mdb
