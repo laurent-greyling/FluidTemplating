@@ -42,3 +42,5 @@ Thumbs.db
 *.cache
 *.pdb
 *.mdb
+# Local backups
+FluidDemoApp_backup/
