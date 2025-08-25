@@ -1,0 +1,23 @@
+[
+  {
+    "AssessmentId": "90d2399b-f294-4642-b1bd-b845b4ad144f",
+    "ClientId": "e5bfdae6-3580-4462-8bd5-79faf6e50dd5",
+    "IsProved": true,
+    "PathToProof": "/Users/laurent.greyling/Downloads/elden-ring-review_tr5u (1).jpg",
+    "Contact": "someone@someone.com"
+  },
+  {
+    "AssessmentId": "6156c2ad-f7e2-4f07-8d61-5a6ea06ab347",
+    "ClientId": "37b7324c-e526-4654-b737-eca907803678",
+    "IsProved": true,
+    "PathToProof": "/Users/laurent.greyling/Downloads/elden-ring-review_tr5u (1).jpg",
+    "Contact": "someone@money.com"
+  },
+  {
+    "AssessmentId": "131f1904-34a6-46fb-967b-d28de9db0f76",
+    "ClientId": "97567d8b-7f4a-412f-88b8-bb7a3e7ea325",
+    "IsProved": false,
+    "PathToProof": "/Users/laurent.greyling/Downloads/elden-ring-review_tr5u (1).jpg",
+    "Contact": "someone@data.com"
+  }
+]

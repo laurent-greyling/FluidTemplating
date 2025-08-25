@@ -1,0 +1,37 @@
+[
+  {
+    "AssessmentId": "90d2399b-f294-4642-b1bd-b845b4ad144f",
+    "ClientId": "e5bfdae6-3580-4462-8bd5-79faf6e50dd5",
+    "ClientName": "Awesome Client",
+    "Summary" : "We found some terrible things in your code",
+    "FindingsCount": 2
+  },
+  {
+    "AssessmentId": "6156c2ad-f7e2-4f07-8d61-5a6ea06ab347",
+    "ClientId": "37b7324c-e526-4654-b737-eca907803678",
+    "ClientName": "Terrible Client",
+    "Summary" : "There are so many mistakes in this code that we need more time",
+    "FindingsCount": 5
+  },
+  {
+    "AssessmentId": "131f1904-34a6-46fb-967b-d28de9db0f76",
+    "ClientId": "97567d8b-7f4a-412f-88b8-bb7a3e7ea325",
+    "ClientName": "Grand Client",
+    "Summary" : "Nothing serious, minor improvement",
+    "FindingsCount": 1
+  },
+  {
+    "AssessmentId": "a6d33cc2-ea0a-4c5a-a369-2791e8b0e0e3",
+    "ClientId": "593a1647-9bd0-4150-a4d4-9f71e1c38442",
+    "ClientName": "Bread and Butter Client",
+    "Summary" : "There are a few interesting things found and need to be fixed",
+    "FindingsCount": 3
+  },
+  {
+    "AssessmentId": "40e2df13-bb5e-486d-bfea-f9d446ce516d",
+    "ClientId": "d2bdcb69-9fe0-404f-b0a4-2f5d78f8de9a",
+    "ClientName": "Bestest Client",
+    "Summary" : "As always, nothing major, just small potential improvement",
+    "FindingsCount": 1
+  }
+]
