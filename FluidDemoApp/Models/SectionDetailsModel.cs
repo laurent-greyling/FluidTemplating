@@ -6,7 +6,6 @@ public class SectionDetailsModel
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; set; } = "";
-    public SectionType Type { get; set; } = SectionType.Text;
     public int Order { get; set; } = 100;
-    public JObject Data { get; set; } = new();
+    public List<SectionBlockDetailsModel> Children { get; set; } = [];
 }

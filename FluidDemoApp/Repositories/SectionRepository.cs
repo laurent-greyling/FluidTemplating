@@ -13,13 +13,6 @@ public static class SectionRepository
         return JsonConvert.DeserializeObject<List<SectionDetailsModel>>(sectionsText) ?? [];
     }
 
-    public static void Save(List<SectionDetailsModel> sectionDetailsList)
-    {
-        Directory.CreateDirectory(Path.GetDirectoryName(FilePath)!);
-        var sectionsJson = JsonConvert.SerializeObject(sectionDetailsList, Formatting.Indented);
-        File.WriteAllText(FilePath, sectionsJson);
-    }
-
     public static void AddOrUpdate(SectionDetailsModel sectionDetails)
     {
         var list = Load();
@@ -27,17 +20,26 @@ public static class SectionRepository
         var existing = list.FirstOrDefault(x => x.Id == sectionDetails.Id)
                        ?? list.FirstOrDefault(x => string.Equals(x.Name, sectionDetails.Name, StringComparison.Ordinal));
 
-        if (existing is null) list.Add(sectionDetails);
+        if (existing is null)
+        {
+            list.Add(sectionDetails);
+        }
         else
         {
             existing.Name = sectionDetails.Name;
-            existing.Type = sectionDetails.Type;
             existing.Order = sectionDetails.Order;
-            existing.Data = sectionDetails.Data;
+            existing.Children = sectionDetails.Children;
         }
 
         list = list.OrderBy(x => x.Order).ThenBy(x => x.Name).ToList();
         Save(list);
+    }
+    
+    private static void Save(List<SectionDetailsModel> sectionDetailsList)
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(FilePath)!);
+        var sectionsJson = JsonConvert.SerializeObject(sectionDetailsList, Formatting.Indented);
+        File.WriteAllText(FilePath, sectionsJson);
     }
     
     private static readonly string FilePath =
