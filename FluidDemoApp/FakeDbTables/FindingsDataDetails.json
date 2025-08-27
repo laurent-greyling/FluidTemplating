@@ -4,83 +4,95 @@
     "ClientId": "e5bfdae6-3580-4462-8bd5-79faf6e50dd5",
     "Severity": 1,
     "Finding": "Finding 1 of 2",
-    "Recommendation": "Fix this with X"
+    "Recommendation": "Fix this with X",
+    "ScreenshotPath": "/Users/laurent.greyling/Downloads/elden-ring-review_tr5u.jpg"
   },
   {
     "AssessmentId": "90d2399b-f294-4642-b1bd-b845b4ad144f",
     "ClientId": "e5bfdae6-3580-4462-8bd5-79faf6e50dd5",
     "Severity": 2,
     "Finding": "Finding 2 of 2",
-    "Recommendation": "Fix this with Y"
+    "Recommendation": "Fix this with Y",
+    "ScreenshotPath": ""
   },  
   {
     "AssessmentId": "6156c2ad-f7e2-4f07-8d61-5a6ea06ab347",
     "ClientId": "37b7324c-e526-4654-b737-eca907803678",
     "Severity": 0,
     "Finding": "Finding 1 of 5",
-    "Recommendation": "Fix this with X"
+    "Recommendation": "Fix this with X",
+    "ScreenshotPath": "/Users/laurent.greyling/Downloads/elden-ring-review_tr5u.jpg"
   },
   {
     "AssessmentId": "6156c2ad-f7e2-4f07-8d61-5a6ea06ab347",
     "ClientId": "37b7324c-e526-4654-b737-eca907803678",
     "Severity": 1,
     "Finding": "Finding 2 of 5",
-    "Recommendation": "Fix this with Y"
+    "Recommendation": "Fix this with Y",
+    "ScreenshotPath": "/Users/laurent.greyling/Downloads/Wuchang-Fallen-Feather-1280x720.jpg"
   },
   {
     "AssessmentId": "6156c2ad-f7e2-4f07-8d61-5a6ea06ab347",
     "ClientId": "37b7324c-e526-4654-b737-eca907803678",
     "Severity": 1,
     "Finding": "Finding 3 of 5",
-    "Recommendation": "Fix this with Z"
+    "Recommendation": "Fix this with Z",
+    "ScreenshotPath": ""
   },
   {
     "AssessmentId": "6156c2ad-f7e2-4f07-8d61-5a6ea06ab347",
     "ClientId": "37b7324c-e526-4654-b737-eca907803678",
     "Severity": 2,
     "Finding": "Finding 4 of 5",
-    "Recommendation": "Fix this with A"
+    "Recommendation": "Fix this with A",
+    "ScreenshotPath": ""
   },
   {
     "AssessmentId": "6156c2ad-f7e2-4f07-8d61-5a6ea06ab347",
     "ClientId": "37b7324c-e526-4654-b737-eca907803678",
     "Severity": 3,
     "Finding": "Finding 5 of 5",
-    "Recommendation": "Fix this with B"
+    "Recommendation": "Fix this with B",
+    "ScreenshotPath": ""
   },
   {
     "AssessmentId": "131f1904-34a6-46fb-967b-d28de9db0f76",
     "ClientId": "97567d8b-7f4a-412f-88b8-bb7a3e7ea325",
     "Severity": 3,
     "Finding": "Finding 1 of 1",
-    "Recommendation": "Fix this with A"
+    "Recommendation": "Fix this with A",
+    "ScreenshotPath": ""
   },
   {
     "AssessmentId": "a6d33cc2-ea0a-4c5a-a369-2791e8b0e0e3",
     "ClientId": "593a1647-9bd0-4150-a4d4-9f71e1c38442",
     "Severity": 3,
     "Finding": "Finding 1 of 3",
-    "Recommendation": "Fix this with A"
+    "Recommendation": "Fix this with A",
+    "ScreenshotPath": ""
   },
   {
     "AssessmentId": "a6d33cc2-ea0a-4c5a-a369-2791e8b0e0e3",
     "ClientId": "593a1647-9bd0-4150-a4d4-9f71e1c38442",
     "Severity": 1,
     "Finding": "Finding 2 of 3",
-    "Recommendation": "Fix this with B"
+    "Recommendation": "Fix this with B",
+    "ScreenshotPath": "/Users/laurent.greyling/Downloads/Wuchang-Fallen-Feather-1280x720.jpg"
   },
   {
     "AssessmentId": "a6d33cc2-ea0a-4c5a-a369-2791e8b0e0e3",
     "ClientId": "593a1647-9bd0-4150-a4d4-9f71e1c38442",
     "Severity": 2,
     "Finding": "Finding 3 of 3",
-    "Recommendation": "Fix this with C"
+    "Recommendation": "Fix this with C",
+    "ScreenshotPath": ""
   },
   {
     "AssessmentId": "40e2df13-bb5e-486d-bfea-f9d446ce516d",
     "ClientId": "d2bdcb69-9fe0-404f-b0a4-2f5d78f8de9a",
     "Severity": 3,
     "Finding": "Finding 1 of 1",
-    "Recommendation": "Fix this with A"
+    "Recommendation": "Fix this with A",
+    "ScreenshotPath": "/Users/laurent.greyling/Downloads/Wuchang-Fallen-Feather-1280x720.jpg"
   }
 ]

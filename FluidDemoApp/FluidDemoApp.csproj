@@ -20,6 +20,9 @@
       <None Update="Templates\report.css">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="FakeDbTables\**\*.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
