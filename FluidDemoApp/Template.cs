@@ -7,7 +7,7 @@ namespace FluidDemoApp;
 
 public static class Template
 {
-    public static async Task RenderAsync(Dictionary<string, object?> variables)
+    public static async Task RenderAsync(Dictionary<string, object?> variables, string templateName)
     {
         var templateContext = new TemplateContext();
         foreach (var (key, value) in variables) templateContext.SetValue(key, value);
@@ -20,7 +20,7 @@ public static class Template
         var css = await File.ReadAllTextAsync(cssPath);
         
         var contentBuilder = new ContentBuilder(parser, templateContext);
-        var templateContent = await contentBuilder.RenderAllAsync();
+        var templateContent = await contentBuilder.RenderTemplateAsync(templateName);
         
         var finalHtml = baseTemplate
             .Replace("{{TITLE}}", "Report")

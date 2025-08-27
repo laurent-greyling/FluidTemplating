@@ -8,6 +8,25 @@ namespace FluidDemoApp.Helpers;
 
 public class ContentBuilder(FluidParser parser, TemplateContext context)
 {
+    public async Task<StringBuilder> RenderTemplateAsync(string templateName)
+    {
+        var template = TemplateRepository.Load()
+            .FirstOrDefault(t => string.Equals(t.Name, templateName, StringComparison.Ordinal));
+        if (template is null)
+            throw new InvalidOperationException($"Template '{templateName}' not found.");
+
+        return await RenderTemplateAsync(template);
+    }
+
+    public async Task<StringBuilder> RenderTemplateAsync(Guid templateId)
+    {
+        var template = TemplateRepository.Load().FirstOrDefault(t => t.Id == templateId);
+        if (template is null)
+            throw new InvalidOperationException($"Template '{templateId}' not found.");
+
+        return await RenderTemplateAsync(template);
+    }
+    
     public async Task<StringBuilder> RenderAllAsync()
     {
         var stringBuilder = new StringBuilder();
@@ -57,4 +76,22 @@ public class ContentBuilder(FluidParser parser, TemplateContext context)
 
     private string RenderListBlock(ListSectionModel model) =>
         ListSections.RenderListHtml(model, context, parser);
+    
+    private async Task<StringBuilder> RenderTemplateAsync(TemplateModel template)
+    {
+        var stringBuilder = new StringBuilder();
+
+        var sectionsById = SectionRepository.Load().ToDictionary(s => s.Id, s => s);
+
+        foreach (var r in template.SectionReferences.OrderBy(r => r.Order))
+        {
+            if (!sectionsById.TryGetValue(r.SectionId, out var section))
+            {
+                stringBuilder.Append($"<!-- Missing section {r.SectionId} -->");
+                continue;
+            }
+            stringBuilder.Append(await RenderSectionAsync(section));
+        }
+        return stringBuilder;
+    }
 }
