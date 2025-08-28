@@ -17,11 +17,33 @@ public static class DataDetailsRepository
 
     // For a quick “picker” UI in the console
     public static List<(Guid AssessmentId, string Label)> GetAssessmentIndex(int take = 50)
-        => LoadAssessments()
+    {
+        var assessments = LoadAssessments()
             .OrderBy(a => a.ClientName ?? string.Empty)
             .Take(take)
-            .Select(a => (a.AssessmentId, $"{a.ClientName ?? "(no client)"} — {a.AssessmentId}"))
             .ToList();
+
+        var bindings  = AssessmentTemplateBindingRepository.Load();
+        var templates = TemplateRepository.Load().ToDictionary(t => t.Id, t => t);
+
+        return assessments.Select(a =>
+        {
+            var binding = bindings.FirstOrDefault(b => b.AssessmentId == a.AssessmentId);
+
+            string suffix;
+            if (binding != null && templates.TryGetValue(binding.TemplateId, out var t))
+            {
+                suffix = $" [bound: {t.Name} v{binding.Version}]";
+            }
+            else
+            {
+                suffix = " [unbound]";
+            }
+
+            return (a.AssessmentId,
+                $"{a.ClientName ?? "(no client)"} — {a.AssessmentId}{suffix}");
+        }).ToList();
+    }
     
     private static readonly JsonSerializerSettings JsonSettings = new()
     {

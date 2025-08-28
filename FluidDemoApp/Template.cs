@@ -7,11 +7,18 @@ namespace FluidDemoApp;
 
 public static class Template
 {
-    public static async Task RenderAsync(Dictionary<string, object?> variables, string templateName)
+    public static async Task RenderAsync(Dictionary<string, object?> variables,
+        string templateName,
+        DataDetailsModel dataDetails)
     {
         var templateContext = new TemplateContext();
         foreach (var (key, value) in variables) templateContext.SetValue(key, value);
 
+        // dynamic data
+        templateContext.SetValue("assessment", dataDetails.Assessment);
+        templateContext.SetValue("findings", dataDetails.Findings);
+        templateContext.SetValue("other", dataDetails.Other);
+        
         var parser = new FluidParser();
         var templatePath = Path.Combine(AppContext.BaseDirectory, "Templates", "base.html");
         var cssPath = Path.Combine(AppContext.BaseDirectory, "Templates", "report.css");

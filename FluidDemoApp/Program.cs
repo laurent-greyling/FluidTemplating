@@ -1,6 +1,8 @@
-﻿using FluidDemoApp;
+﻿using Fluid;
+using FluidDemoApp;
 using FluidDemoApp.Helpers;
 using FluidDemoApp.Repositories;
+using FluidDemoApp.Services;
 
 while (true)
 {
@@ -9,9 +11,10 @@ while (true)
     Console.WriteLine("1) Add/Update Variables");
     Console.WriteLine("2) Add/Update Sections");
     Console.WriteLine("3) Add/Update Templates");
-    Console.WriteLine("4) Render Template (build PDF)");
-    Console.WriteLine("5) Exit");
-    Console.Write("Select (1-5): ");
+    Console.WriteLine("4) Assign Template to Assessment");
+    Console.WriteLine("5) Render (choose Assessment; use binding or override)");
+    Console.WriteLine("6) Exit");
+    Console.Write("Select (1-6): ");
 
     var choice = (Console.ReadLine() ?? "").Trim();
 
@@ -20,7 +23,6 @@ while (true)
         case "1":
             var variables = VariableCollector.Generate();
             VariableRepository.MergeAndSave(variables);
-            Console.WriteLine("Variables captured/updated.");
             Console.WriteLine("Variables saved to Data/variables.json");
             break;
         case "2":
@@ -44,35 +46,78 @@ while (true)
             Console.WriteLine("Templates saved to Data/templates.json");
             break;
         case "4":
-            var templates = TemplateRepository.Load();
-            if (templates.Count == 0)
+            TemplateBindingCollector.Assign();
+            break;
+        case "5":
+        {
+            //pick assessment
+            var index = DataDetailsRepository.GetAssessmentIndex(100);
+            if (index.Count == 0)
             {
-                Console.WriteLine("No templates exist. Create one first.");
+                Console.WriteLine("No assessments found.");
                 break;
             }
 
-            Console.WriteLine("\nAvailable templates:");
-            for (var i = 0; i < templates.Count; i++)
+            Console.WriteLine("\nAvailable assessments:");
+            for (var i = 0; i < index.Count; i++)
             {
-                Console.WriteLine($"{i + 1}) {templates[i].Name}");
+                Console.WriteLine($"{i + 1}) {index[i].Label}");
             }
 
-            Console.Write("Select template number to render: ");
-            if (int.TryParse(Console.ReadLine(), out var idx) && idx >= 1 && idx <= templates.Count)
+            Console.Write("Pick number or paste AssessmentId: ");
+            var assessmentNumber = (Console.ReadLine() ?? "").Trim();
+
+            Guid assessmentId;
+            if (int.TryParse(assessmentNumber, out var number) 
+                && number >= 1 
+                && number <= index.Count)
             {
-                var selectedTemplate = templates[idx - 1];
-                var variablesFromFile = VariableRepository.Load();
-                await Template.RenderAsync(variablesFromFile, selectedTemplate.Name);
+                assessmentId = index[number - 1].AssessmentId;
             }
-            else
+            else if (!Guid.TryParse(assessmentNumber, out assessmentId))
             {
                 Console.WriteLine("Invalid selection.");
+                break;
             }
+
+            //check binding(s)
+            var templateName = ResolveTemplateNameForAssessment(assessmentId);
+            if (string.IsNullOrEmpty(templateName))
+            {
+                Console.WriteLine("No template binding found. Please assign a template first.");
+                break;
+            }
+
+            //resolve data & render
+            var data = DataDetailsService.GetDataDetailsForAssessment(assessmentId);
+            var variableList = VariableRepository.Load();
+
+            await Template.RenderAsync(variableList, templateName, data);
             break;
-        case "5":
+        }
+        case "6":
             return;
         default:
-            Console.WriteLine("Unknown option. Please choose 1–5.");
+            Console.WriteLine("Unknown option. Please choose 1–6.");
             break;
     }
+}
+
+string? ResolveTemplateNameForAssessment(Guid assessmentId)
+{
+    var bindings = AssessmentTemplateBindingRepository
+        .GetForAssessment(assessmentId)
+        .OrderByDescending(b => b.Version)
+        .ThenByDescending(b => b.CreatedDate)
+        .ToList();
+
+    if (bindings.Count == 0) return null;
+
+    var templatesById = TemplateRepository.Load()
+        .ToDictionary(t => t.Id, t => t);
+
+    var chosen = bindings[0]; // best one
+    return templatesById.TryGetValue(chosen.TemplateId, out var template)
+        ? template.Name
+        : null;
 }
