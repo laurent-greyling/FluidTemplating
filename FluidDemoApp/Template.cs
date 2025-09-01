@@ -1,5 +1,7 @@
 using System.Text;
 using Fluid;
+using Fluid.Values;
+using FluidDemoApp.DBContext;
 using FluidDemoApp.Helpers;
 using FluidDemoApp.Models;
 
@@ -11,13 +13,18 @@ public static class Template
         string templateName,
         DataDetailsModel dataDetails)
     {
-        var templateContext = new TemplateContext();
+        var options = new TemplateOptions();
+
+        options.MemberAccessStrategy.Register<DataDetailsModel>();
+        options.MemberAccessStrategy.Register<AssessmentDetailsEntity>();
+        options.MemberAccessStrategy.Register<FindingsDetailsEntity>();
+        options.MemberAccessStrategy.Register<OtherDetailsEntity>();
+        
+        var templateContext = new TemplateContext(options);
         foreach (var (key, value) in variables) templateContext.SetValue(key, value);
 
-        // dynamic data
-        templateContext.SetValue("assessment", dataDetails.Assessment);
-        templateContext.SetValue("findings", dataDetails.Findings);
-        templateContext.SetValue("other", dataDetails.Other);
+        //Dynamic data
+        templateContext.SetValue("report", dataDetails);
         
         var parser = new FluidParser();
         var templatePath = Path.Combine(AppContext.BaseDirectory, "Templates", "base.html");
