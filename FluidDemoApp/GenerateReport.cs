@@ -19,6 +19,9 @@ public static class GenerateReport
             WaitUntil = WaitUntilState.Load
         });
         
+        var year = DateTime.UtcNow.Year;
+        const string companyName = "MyCompany Name"; // hardcode for POC
+        
         var pdfBytes = await page.PdfAsync(new PagePdfOptions
         {
             Format = "A4",
@@ -29,7 +32,16 @@ public static class GenerateReport
                 Left = "15mm", 
                 Right = "15mm"
             },
-            PrintBackground = true
+            PrintBackground = true,
+            DisplayHeaderFooter = true,
+            HeaderTemplate = @"<div></div>", // empty header (we only use a footer)
+            FooterTemplate = $@"
+              <div style=""font-size:9px; color:#666; width:100%; padding:0 10mm;"">
+                <div style=""display:flex; justify-content:space-between; align-items:center;"">
+                  <span>{year}&nbsp;&nbsp;{companyName}&nbsp;Confidential</span>
+                  <span><span class=""pageNumber""></span>/<span class=""totalPages""></span></span>
+                </div>
+              </div>"
         });
 
         var pdfPath = Path.GetFullPath("report.pdf");
