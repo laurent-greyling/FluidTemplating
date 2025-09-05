@@ -35,6 +35,34 @@ public static class ListSections
         Console.Write("Tight spacing? (y/n): ");
         var tight = (Console.ReadLine() ?? "").Trim().Equals("y", StringComparison.OrdinalIgnoreCase);
 
+        Console.Write("Dynamic list from data source? (y/n): ");
+        var dynamic = (Console.ReadLine() ?? "").Trim().Equals("y", StringComparison.OrdinalIgnoreCase);
+
+        if (dynamic)
+        {
+            Console.Write("Enter data source (e.g. report.Findings): ");
+            var source = (Console.ReadLine() ?? "").Trim();
+
+            var fields = new List<string>();
+            Console.WriteLine("Enter field templates (e.g. {{ item.Severity }}). One per line. Type END to finish.");
+            while (true)
+            {
+                var line = Console.ReadLine();
+                if (line is not null && line.Trim() == "END") break;
+                fields.Add(line ?? "");
+            }
+
+            return new ListSectionModel
+            {
+                HeadingTemplate = heading,
+                Kind = kind,
+                StartNumber = start,
+                Tight = tight,
+                Source = source,
+                Fields = fields
+            };
+        }
+        
         Console.WriteLine("Enter list items (Fluid allowed). One per line. Finish with a single line: END");
         var items = new List<string>();
         while (true)
@@ -81,19 +109,42 @@ public static class ListSections
                 break;
         }
 
-        foreach (var itemTemplateText in listSection.ItemTemplates)
+        if (!string.IsNullOrWhiteSpace(listSection.Source))
         {
-            if (!parser.TryParse(itemTemplateText ?? "", out var itemTemplate, out var error))
-                throw new InvalidOperationException($"List item template error: {error}");
+            var liBody = string.Join(
+                "\n        ",
+                listSection.Fields.Select(f => $"<div>{f}</div>")
+            );
 
-            var rendered = itemTemplate.Render(templateContext); // allow simple HTML if present
-            if (listSection.Kind == ListKind.Checklist)
+            var liTemplate = listSection.Kind == ListKind.Checklist
+                ? $"<li><span class=\"box\">&#x2610;</span> <span class=\"txt\">{liBody}</span></li>"
+                : $"<li>{liBody}</li>";
+
+            // Let Fluid resolve the dotted path by using a real {% for %} loop internally
+            var loopTemplateText = $"{{% for item in {listSection.Source} %}}{liTemplate}{{% endfor %}}";
+
+            if (!parser.TryParse(loopTemplateText, out var loopTemplate, out var loopErr))
+                throw new InvalidOperationException($"Dynamic list loop template error: {loopErr}");
+
+            var itemsHtml = loopTemplate.Render(templateContext);
+            stringBuilder.Append(itemsHtml);
+        }
+        else
+        {
+            foreach (var itemTemplateText in listSection.ItemTemplates)
             {
-                stringBuilder.Append($"  <li><span class=\"box\">&#x2610;</span> <span class=\"txt\">{rendered}</span></li>\n");
-            }
-            else
-            {
-                stringBuilder.Append($"  <li>{rendered}</li>\n");
+                if (!parser.TryParse(itemTemplateText ?? "", out var itemTemplate, out var error))
+                    throw new InvalidOperationException($"List item template error: {error}");
+
+                var rendered = itemTemplate.Render(templateContext);
+                if (listSection.Kind == ListKind.Checklist)
+                {
+                    stringBuilder.Append($"  <li><span class=\"box\">&#x2610;</span> <span class=\"txt\">{rendered}</span></li>\n");
+                }
+                else
+                {
+                    stringBuilder.Append($"  <li>{rendered}</li>\n");
+                }
             }
         }
 
