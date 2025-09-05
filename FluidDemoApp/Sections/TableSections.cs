@@ -111,6 +111,10 @@ public static class TableSections
             var id = TableOfContentCollector.GenerateAnchorId(heading);
             TableOfContentCollector.Add(2, heading); // tables are subheadings (H2)
             stringBuilder.Append($"<h2 id=\"{id}\">{System.Net.WebUtility.HtmlEncode(heading)}</h2>\n");
+            
+            // add a tiny hidden marker right after heading so it lands on the same page
+            // this is for Toc to be rendered as I want it
+            stringBuilder.Append($"<span class=\"toc-marker\">[toc:{id}]</span>");
         }
 
         stringBuilder.Append("""

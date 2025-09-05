@@ -25,14 +25,33 @@ ul.list.checklist { list-style: none; margin-left: 0; }
 ul.list.checklist li { margin: 0 0 0.2cm 0; }
 ul.list.checklist .box { font-family: "Segoe UI Symbol", "Apple Color Emoji", sans-serif; margin-right: 6px; }
 
-.toc, .toc * { white-space: normal !important; }
+/* compact list with leaders and page number */
+.toc { white-space: normal; }
+.toc h1 { font-size: 18pt; margin: 0 0 0.3cm 0; }
 .toc-list { list-style: none; margin: 0; padding: 0; }
-.toc-list li { margin: 0; padding: 0.1cm 0; line-height: 1.2; }
-.toc-list a { color: #0645AD; text-decoration: underline; }
-.toc {
-    break-after: page;
-    page-break-after: always;
+.toc-row { display: flex; align-items: baseline; gap: 8px; padding: 2px 0; line-height: 1.2; }
+.toc-title { color: #0645AD; text-decoration: underline; }
+
+.toc-dots {
+    flex: 1 1 auto;
+    border-bottom: 1px dotted #aaa;
+    height: 0;                /* so the rule stays centered */
+    margin: 0 6px;
 }
+.toc-page { width: 28px; text-align: right; }
+
+/* indent levels */
+.toc-l2 { margin-left: 0.5cm; }
+.toc-l3 { margin-left: 1.0cm; }
+
+/* page breaks */
+.toc { break-after: page; page-break-after: always; }
+.report-section { break-before: page; page-break-before: always; }
+
+/* IMPORTANT: kill pre-wrap inside the ToC to avoid huge gaps */
+.toc, .toc * { white-space: normal !important; }
+
+.toc-marker { color: #fff; font-size: 1px; } /* effectively invisible on white */
 
 /* Start every section on a new page in PDF/print */
 .report-section {

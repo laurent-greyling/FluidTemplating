@@ -61,6 +61,10 @@ public static class Sections
             ? $"<h1 id=\"{id}\">{System.Net.WebUtility.HtmlEncode(heading)}</h1>\n" 
             : $"<h2 id=\"{id}\">{System.Net.WebUtility.HtmlEncode(heading)}</h2>\n");
     
+        // add a tiny hidden marker right after heading so it lands on the same page
+        // this is for Toc to be rendered as I want it
+        stringBuilder.Append($"<span class=\"toc-marker\">[toc:{id}]</span>");
+        
         if (!parser.TryParse(section.BodyTemplate, out var bodyTemplate, out var bodyError))
             throw new InvalidOperationException($"Body template error: {bodyError}");
     

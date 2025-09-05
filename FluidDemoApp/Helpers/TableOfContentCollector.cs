@@ -51,4 +51,29 @@ public static class TableOfContentCollector
         stringBuilder.AppendLine("</div>");
         return stringBuilder.ToString();
     }
+    
+    public static string GenerateHtmlWithPages(IReadOnlyDictionary<string,int> pageMap)
+    {
+        if (_items.Count == 0) return string.Empty;
+
+        var stringBuilder = new StringBuilder();
+        stringBuilder.AppendLine("<div class=\"toc\">");
+        stringBuilder.AppendLine("<h1>Table of Contents</h1>");
+        stringBuilder.AppendLine("<ul class=\"toc-list\">");
+
+        foreach (var (level, text, id) in _items)
+        {
+            var page = pageMap.TryGetValue(id, out var p) ? p.ToString() : "";
+            stringBuilder.AppendLine($@"
+                <li class=""toc-row toc-l{level}"">
+                  <a href=""#{id}"" class=""toc-title"">{System.Net.WebUtility.HtmlEncode(text)}</a>
+                  <span class=""toc-dots""></span>
+                  <span class=""toc-page"">{page}</span>
+                </li>");
+        }
+
+        stringBuilder.AppendLine("</ul>");
+        stringBuilder.AppendLine("</div>");
+        return stringBuilder.ToString();
+    }
 }

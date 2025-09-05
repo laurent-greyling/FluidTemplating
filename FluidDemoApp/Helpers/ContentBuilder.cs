@@ -29,8 +29,6 @@ public class ContentBuilder(FluidParser parser, TemplateContext context)
     
     public async Task<StringBuilder> RenderAllAsync()
     {
-        TableOfContentCollector.Reset();
-        
         var stringBuilder = new StringBuilder();
         var sections = SectionRepository.Load()
             .OrderBy(x => x.Order)
@@ -42,13 +40,7 @@ public class ContentBuilder(FluidParser parser, TemplateContext context)
             stringBuilder.Append(await RenderSectionAsync(section));
         }
         
-        var tocHtml = TableOfContentCollector.GenerateHtml();
-        if (string.IsNullOrEmpty(tocHtml)) return stringBuilder;
-        
-        var finalStringBuilder = new StringBuilder();
-        finalStringBuilder.Append(tocHtml);
-        finalStringBuilder.Append(stringBuilder);
-        return finalStringBuilder;
+        return stringBuilder;
     }
 
     private async Task<string> RenderSectionAsync(SectionDetailsModel section)
@@ -91,8 +83,6 @@ public class ContentBuilder(FluidParser parser, TemplateContext context)
     
     private async Task<StringBuilder> RenderTemplateAsync(TemplateModel template)
     {
-        TableOfContentCollector.Reset();
-        
         var stringBuilder = new StringBuilder();
 
         var sectionsById = SectionRepository.Load().ToDictionary(s => s.Id, s => s);
@@ -107,12 +97,6 @@ public class ContentBuilder(FluidParser parser, TemplateContext context)
             stringBuilder.Append(await RenderSectionAsync(section));
         }
         
-        var tocHtml = TableOfContentCollector.GenerateHtml();
-        if (string.IsNullOrEmpty(tocHtml)) return stringBuilder;
-        
-        var finalStringBuilder = new StringBuilder();
-        finalStringBuilder.Append(tocHtml);
-        finalStringBuilder.Append(stringBuilder);
-        return finalStringBuilder;
+        return stringBuilder;
     }
 }

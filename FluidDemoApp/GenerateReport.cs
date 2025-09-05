@@ -4,7 +4,7 @@ namespace FluidDemoApp;
 
 public static class GenerateReport
 {
-    public static async Task PdfAsync(string html)
+    public static async Task PdfAsync(string html, string? outputPath = null)
     {
         var htmlPath = Path.GetFullPath("report.html");
         await File.WriteAllTextAsync(htmlPath, html);
@@ -44,7 +44,7 @@ public static class GenerateReport
               </div>"
         });
 
-        var pdfPath = Path.GetFullPath("report.pdf");
+        var pdfPath = outputPath ?? Path.GetFullPath("report.pdf");
         await File.WriteAllBytesAsync(pdfPath, pdfBytes);
         Console.WriteLine($"PDF saved: {pdfPath}");
     }
