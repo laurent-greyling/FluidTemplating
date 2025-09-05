@@ -1,5 +1,6 @@
 using System.Text;
 using Fluid;
+using FluidDemoApp.Helpers;
 using FluidDemoApp.Models;
 
 namespace FluidDemoApp.Sections;
@@ -52,9 +53,13 @@ public static class Sections
             throw new InvalidOperationException($"Heading template error: {headingError}");
     
         var heading = await headingTemplate.RenderAsync(templateContext);
+        
+        var id = TableOfContentCollector.GenerateAnchorId(heading);
+        TableOfContentCollector.Add(section.Level, heading);
+        
         stringBuilder.Append(section.Level == 1 
-            ? $"<h1>{System.Net.WebUtility.HtmlEncode(heading)}</h1>\n" 
-            : $"<h2>{System.Net.WebUtility.HtmlEncode(heading)}</h2>\n");
+            ? $"<h1 id=\"{id}\">{System.Net.WebUtility.HtmlEncode(heading)}</h1>\n" 
+            : $"<h2 id=\"{id}\">{System.Net.WebUtility.HtmlEncode(heading)}</h2>\n");
     
         if (!parser.TryParse(section.BodyTemplate, out var bodyTemplate, out var bodyError))
             throw new InvalidOperationException($"Body template error: {bodyError}");

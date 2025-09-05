@@ -1,5 +1,6 @@
 using System.Text;
 using Fluid;
+using FluidDemoApp.Helpers;
 using FluidDemoApp.Models;
 
 namespace FluidDemoApp.Sections;
@@ -106,7 +107,10 @@ public static class TableSections
             if (!parser.TryParse(tableSectionModel.HeadingTemplate, out var ht, out var herr))
                 throw new InvalidOperationException($"Table heading template error: {herr}");
             var heading = ht.Render(templateContext);
-            stringBuilder.Append($"<h2>{System.Net.WebUtility.HtmlEncode(heading)}</h2>\n");
+            
+            var id = TableOfContentCollector.GenerateAnchorId(heading);
+            TableOfContentCollector.Add(2, heading); // tables are subheadings (H2)
+            stringBuilder.Append($"<h2 id=\"{id}\">{System.Net.WebUtility.HtmlEncode(heading)}</h2>\n");
         }
 
         stringBuilder.Append("""

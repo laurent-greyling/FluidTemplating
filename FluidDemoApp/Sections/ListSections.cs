@@ -1,5 +1,6 @@
 using System.Text;
 using Fluid;
+using FluidDemoApp.Helpers;
 using FluidDemoApp.Models;
 
 namespace FluidDemoApp.Sections;
@@ -91,7 +92,11 @@ public static class ListSections
             if (!parser.TryParse(listSection.HeadingTemplate, out var headingTemplate, out var error))
                 throw new InvalidOperationException($"List heading template error: {error}");
             var heading = headingTemplate.Render(templateContext);
-            stringBuilder.Append($"<h2>{System.Net.WebUtility.HtmlEncode(heading)}</h2>\n");
+            
+            var id = TableOfContentCollector.GenerateAnchorId(heading);
+            TableOfContentCollector.Add(2, heading); // lists are subheadings (H2)
+            
+            stringBuilder.Append($"<h2 id=\"{id}\">{System.Net.WebUtility.HtmlEncode(heading)}</h2>\n");
         }
 
         var htmlClass = listSection.Tight ? "list tight" : "list";

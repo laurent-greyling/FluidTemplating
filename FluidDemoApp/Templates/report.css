@@ -24,3 +24,10 @@ ul.list li, ol.list li { margin: 0 0 0.2cm 0; }
 ul.list.checklist { list-style: none; margin-left: 0; }
 ul.list.checklist li { margin: 0 0 0.2cm 0; }
 ul.list.checklist .box { font-family: "Segoe UI Symbol", "Apple Color Emoji", sans-serif; margin-right: 6px; }
+
+.toc, .toc * { white-space: normal !important; }
+.toc-list { list-style: none; margin: 0; padding: 0; }
+.toc-list li { margin: 0; padding: 0.1cm 0; line-height: 1.2; }
+.toc-list a { color: #0645AD; text-decoration: underline; }
+
+
