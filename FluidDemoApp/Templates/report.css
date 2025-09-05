@@ -29,5 +29,15 @@ ul.list.checklist .box { font-family: "Segoe UI Symbol", "Apple Color Emoji", sa
 .toc-list { list-style: none; margin: 0; padding: 0; }
 .toc-list li { margin: 0; padding: 0.1cm 0; line-height: 1.2; }
 .toc-list a { color: #0645AD; text-decoration: underline; }
+.toc {
+    break-after: page;
+    page-break-after: always;
+}
+
+/* Start every section on a new page in PDF/print */
+.report-section {
+    break-before: page;/* modern */
+    page-break-before: always;/* legacy alias for wider engines */
+}
 
 

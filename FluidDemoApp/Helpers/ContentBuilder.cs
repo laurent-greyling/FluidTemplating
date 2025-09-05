@@ -55,10 +55,14 @@ public class ContentBuilder(FluidParser parser, TemplateContext context)
     {
         var stringBuilder = new StringBuilder();
 
+        stringBuilder.Append("<section class=\"report-section\">");
+        
         foreach (var block in section.Children.OrderBy(b => b.Order))
         {
             stringBuilder.Append(await RenderBlockAsync(block));
         }
+        
+        stringBuilder.Append("</section>");
 
         return stringBuilder.ToString();
     }
