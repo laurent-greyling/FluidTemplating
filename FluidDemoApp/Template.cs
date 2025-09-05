@@ -11,7 +11,8 @@ public static class Template
 {
     public static async Task RenderAsync(Dictionary<string, object?> variables,
         string templateName,
-        DataDetailsModel dataDetails)
+        DataDetailsModel dataDetails,
+        string cssFileName = "report.css")
     {
         var options = new TemplateOptions();
 
@@ -29,7 +30,7 @@ public static class Template
         
         var parser = new FluidParser();
         var templatePath = Path.Combine(AppContext.BaseDirectory, "Templates", "base.html");
-        var cssPath = Path.Combine(AppContext.BaseDirectory, "Templates", "report.css");
+        var cssPath = Path.Combine(AppContext.BaseDirectory, "Templates", cssFileName);
 
         var baseTemplate = await File.ReadAllTextAsync(templatePath);
         var css = await File.ReadAllTextAsync(cssPath);

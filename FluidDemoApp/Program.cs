@@ -89,10 +89,11 @@ while (true)
             }
 
             //resolve data & render
+            var cssFile = ThemeSelector.PickVisualTemplate();
             var data = DataDetailsService.GetDataDetailsForAssessment(assessmentId);
             var variableList = VariableRepository.Load();
 
-            await Template.RenderAsync(variableList, templateName, data);
+            await Template.RenderAsync(variableList, templateName, data, cssFile);
             break;
         }
         case "6":

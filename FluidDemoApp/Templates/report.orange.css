@@ -1,0 +1,86 @@
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.5; margin: 2cm; }
+h1 { font-size: 24pt; margin: 0 0 0.4cm 0; }
+h2 { font-size: 18pt; margin: 0.6cm 0 0.3cm 0; }
+p, div { font-size: 11pt; margin: 0 0 0.3cm 0; white-space: pre-wrap; }
+.page-break { page-break-before: always; }
+header { position: running(header); }
+footer { position: running(footer); font-size: 9pt; color: #666; }
+
+table.tbl { border-collapse: collapse; width: 100%; margin: 0.4cm 0 0.8cm 0; font-size: 11pt; }
+table.tbl th, table.tbl td { border: 1px solid #ddd; padding: 6px 8px; vertical-align: top; }
+table.tbl th { background: #f5f5f7; font-weight: 600; }
+
+figure.img { margin: 0.5cm 0 0.8cm 0; }
+figure.img img { display: block; }
+figure.img figcaption { font-size: 9.5pt; color: #666; margin-top: 6px; }
+.img-center { text-align: center; }
+.img-left { text-align: left; }
+.img-right { text-align: right; }
+
+ul.list, ol.list { margin: 0.2cm 0 0.6cm 1.1em; font-size: 11pt; }
+ul.list.tight li, ol.list.tight li { margin: 0; }
+ul.list li, ol.list li { margin: 0 0 0.2cm 0; }
+
+ul.list.checklist { list-style: none; margin-left: 0; }
+ul.list.checklist li { margin: 0 0 0.2cm 0; }
+ul.list.checklist .box { font-family: "Segoe UI Symbol", "Apple Color Emoji", sans-serif; margin-right: 6px; }
+
+/* compact list with leaders and page number */
+.toc { white-space: normal; }
+.toc h1 { font-size: 18pt; margin: 0 0 0.3cm 0; }
+.toc-list { list-style: none; margin: 0; padding: 0; }
+.toc-row { display: flex; align-items: baseline; gap: 8px; padding: 2px 0; line-height: 1.2; }
+
+.toc-dots {
+    flex: 1 1 auto;
+    border-bottom: 1px dotted #aaa;
+    height: 0;                /* so the rule stays centered */
+    margin: 0 6px;
+}
+.toc-page { width: 28px; text-align: right; }
+
+/* indent levels */
+.toc-l2 { margin-left: 0.5cm; }
+.toc-l3 { margin-left: 1.0cm; }
+
+/* page breaks */
+.toc { break-after: page; page-break-after: always; }
+.report-section { break-before: page; page-break-before: always; }
+
+/* IMPORTANT: kill pre-wrap inside the ToC to avoid huge gaps */
+.toc, .toc * { white-space: normal !important; }
+
+.toc-marker { color: #fff; font-size: 1px; } /* effectively invisible on white */
+
+/* Start every section on a new page in PDF/print */
+.report-section {
+    break-before: page;/* modern */
+    page-break-before: always;/* legacy alias for wider engines */
+}
+
+/* --- Orange theme overrides --- */
+
+/* Use Calibri stack */
+body {
+    font-family: Calibri, "Segoe UI", Arial, sans-serif;
+}
+
+/* Only the TOC heading should be orange */
+.toc h1 {
+    color: #f27c31;
+}
+
+/* Headings in the document also orange */
+h1, h2, h3 {
+    color: #f27c31;
+}
+
+/* Keep TOC links as default (blue or black depending on browser/PDF) */
+.toc-title {
+    color: inherit;   /* revert to normal text/link color */
+    text-decoration: underline; /* keep underline so it looks like a link */
+}
+
+.toc a:hover {
+    text-decoration: underline;
+}
