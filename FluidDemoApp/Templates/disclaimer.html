@@ -1,0 +1,23 @@
+<div class="disclaimer-page report-section">
+    <!-- Address block aligned to the RIGHT, divider on the LEFT of it -->
+    <div class="disclaimer-header">
+        <div class="disclaimer-address">
+            <h3>{{ report.Assessment.ClientName | default: "MyBusiness BV" }}</h3>
+            <p>{{ companyAddressLine1 | default: "Narnia 155" }}</p>
+            <p>{{ companyAddressLine2 | default: "1055 CA America" }}</p>
+            <p>{{ companyPhone        | default: "+31 20 000 0000" }}</p>
+            <p>{{ companyEmail        | default: "info@mybusiness.nl" }}</p>
+            <p>{{ companyWeb          | default: "www.mybusiness.nl" }}</p>
+            <p>{{ companyCoC          | default: "32423" }}</p>
+            <p>{{ companyVat          | default: "23423 3423 324" }}</p>
+        </div>
+    </div>
+
+    <!-- Legal text sits at the BOTTOM -->
+    <div class="disclaimer-legal">
+        <p>Dit document is opgesteld door {{ report.Assessment.ClientName | default: "MyBusiness BV" }}. De informatie in dit document mag niet worden gewijzigd of gekopieerd zonder voorafgaande toestemming van {{ report.Assessment.ClientName | default: "MyBusiness BV" }}.</p>
+        <p>{{ report.Assessment.ClientName | default: "MyBusiness BV" }} en haar logo’s zijn handelsmerken van {{ report.Assessment.ClientName | default: "MyBusiness BV" }}. De handelsmerken, namen en illustraties van andere organisaties en producten zijn eigendom van de betreffende rechthebbenden.</p>
+        <p>De informatie in dit document, inclusief eventuele bijlage(n), is vertrouwelijk en uitsluitend bestemd voor de geadresseerde. Publicatie, reproductie, distributie of inzage is alleen toegestaan met expliciete toestemming van {{ report.Assessment.ClientName | default: "MyBusiness BV" }} of de geadresseerde.</p>
+        <p>© {{ report.Assessment.ClientName | default: "MyBusiness BV" }}</p>
+    </div>
+</div>

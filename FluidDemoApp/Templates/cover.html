@@ -1,0 +1,11 @@
+<div class="cover-page report-section">
+    <div class="brand">
+        <!-- Use an absolute path or a variable {{ logoPath }} -->
+        <img src="{{ logoPath | default: 'https://wuchanggame.com/wp-content/uploads/2024/05/Wuchang_Screenshot_5.jpg' }}" class="logo" />
+    </div>
+
+    <h1>{{ report.Assessment.ClientName | default: "Client" }}</h1>
+    <h2>{{ report.Assessment.AssessmentId | default: "Engagement" }}</h2>
+
+    <div class="confidential">CONFIDENTIAL</div>
+</div>

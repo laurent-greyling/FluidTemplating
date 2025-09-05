@@ -35,6 +35,18 @@ public static class Template
         var baseTemplate = await File.ReadAllTextAsync(templatePath);
         var css = await File.ReadAllTextAsync(cssPath);
         
+        var templatesDir = Path.Combine(AppContext.BaseDirectory, "Templates");
+        var coverPath = Path.Combine(templatesDir, "cover.html");
+        var disclaimerPath = Path.Combine(templatesDir, "disclaimer.html");
+
+        var coverHtml = File.Exists(coverPath)
+            ? await RenderPartialAsync(coverPath, templateContext, parser)
+            : "";
+        var disclaimerHtml = File.Exists(disclaimerPath)
+            ? await RenderPartialAsync(disclaimerPath, templateContext, parser)
+            : "";
+        var prefaceHtml = coverHtml + disclaimerHtml;
+        
         //Pass 1 – provisional ToC (no page numbers)
         TableOfContentCollector.Reset();
         
@@ -43,7 +55,7 @@ public static class Template
 
         //Hold only links no page numbers, why its temp
         var tableOfContentTemp = TableOfContentCollector.GenerateHtml();
-        var initialHtml = BuildHtml(baseTemplate, css, tableOfContentTemp, templateContent);
+        var initialHtml = BuildHtml(baseTemplate, css, prefaceHtml, tableOfContentTemp, templateContent);
         
         var tmpPdf = Path.GetFullPath("report_tmp.pdf");
         await GenerateReport.PdfAsync(initialHtml, tmpPdf);
@@ -51,7 +63,7 @@ public static class Template
         var pagesMapped = TableOfContentPageExtractor.Extract(tmpPdf);
         
         var tableOfContentFinal = TableOfContentCollector.GenerateHtmlWithPages(pagesMapped);
-        var finalHtml = BuildHtml(baseTemplate, css, tableOfContentFinal, templateContent);
+        var finalHtml = BuildHtml(baseTemplate, css, prefaceHtml, tableOfContentFinal, templateContent);
         
         var finalPdf = Path.GetFullPath("report.pdf");
         await GenerateReport.PdfAsync(finalHtml, finalPdf);
@@ -59,11 +71,16 @@ public static class Template
         TryDelete(tmpPdf);
     }
     
-    private static string BuildHtml(string baseTemplate, string css, string tocHtml, StringBuilder content)
-        => baseTemplate
+    private static string BuildHtml(
+        string baseTemplate,
+        string css,
+        string prefaceHtml,
+        string tocHtml,
+        StringBuilder content) =>
+        baseTemplate
             .Replace("{{TITLE}}", "Report")
             .Replace("{{STYLES}}", $"<style>\n{css}\n</style>")
-            .Replace("{{CONTENT}}", tocHtml + content.ToString());
+            .Replace("{{CONTENT}}", prefaceHtml + tocHtml + content.ToString());
     
     private static void TryDelete(string path)
     {
@@ -71,5 +88,13 @@ public static class Template
         {
             if (File.Exists(path)) File.Delete(path);
         } catch { /* ignore */ }
+    }
+    
+    private static async Task<string> RenderPartialAsync(string path, TemplateContext context, FluidParser parser)
+    {
+        var text = await File.ReadAllTextAsync(path);
+        if (!parser.TryParse(text, out var template, out var err))
+            throw new InvalidOperationException($"Partial parse error ({Path.GetFileName(path)}): {err}");
+        return await template.RenderAsync(context);
     }
 }

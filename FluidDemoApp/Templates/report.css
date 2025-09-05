@@ -26,7 +26,12 @@ ul.list.checklist li { margin: 0 0 0.2cm 0; }
 ul.list.checklist .box { font-family: "Segoe UI Symbol", "Apple Color Emoji", sans-serif; margin-right: 6px; }
 
 /* compact list with leaders and page number */
-.toc { white-space: normal; }
+.toc { 
+    white-space: normal;
+
+    break-after: page;
+    page-break-after: always;
+}
 .toc h1 { font-size: 18pt; margin: 0 0 0.3cm 0; }
 .toc-list { list-style: none; margin: 0; padding: 0; }
 .toc-row { display: flex; align-items: baseline; gap: 8px; padding: 2px 0; line-height: 1.2; }
@@ -35,7 +40,7 @@ ul.list.checklist .box { font-family: "Segoe UI Symbol", "Apple Color Emoji", sa
 .toc-dots {
     flex: 1 1 auto;
     border-bottom: 1px dotted #aaa;
-    height: 0;                /* so the rule stays centered */
+    height: 0; 
     margin: 0 6px;
 }
 .toc-page { width: 28px; text-align: right; }
@@ -45,7 +50,6 @@ ul.list.checklist .box { font-family: "Segoe UI Symbol", "Apple Color Emoji", sa
 .toc-l3 { margin-left: 1.0cm; }
 
 /* page breaks */
-.toc { break-after: page; page-break-after: always; }
 .report-section { break-before: page; page-break-before: always; }
 
 /* IMPORTANT: kill pre-wrap inside the ToC to avoid huge gaps */
@@ -58,5 +62,115 @@ ul.list.checklist .box { font-family: "Segoe UI Symbol", "Apple Color Emoji", sa
     break-before: page;/* modern */
     page-break-before: always;/* legacy alias for wider engines */
 }
+
+/* --- Cover page layout --- */
+.cover-page {
+    /* Fill the printable area of the page (A4 minus PDF margins) */
+    /* With Playwright margins Top/Bottom 20mm, height ~ 297 - 40 = 257mm */
+    position: relative;
+    height: 257mm; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;    
+    align-items: center; 
+    text-align: center;
+    break-after: auto;
+    page-break-after: auto;
+
+    break-inside: avoid;      
+}
+
+/* If you globally force every section to start on a new page: cancel it for cover */
+.cover-page.report-section {
+    break-before: auto;
+    page-break-before: auto;
+}
+
+/* Brand logo fixed top-left, small and neat */
+.cover-page .brand {
+    position: absolute;
+    top: 12mm;    
+    left: 12mm;    
+}
+
+.cover-page .brand .logo {
+    width: 32mm;    
+    height: auto;
+    display: block;
+}
+
+/* Title styles (orange theme example) */
+.cover-page h1 {
+    margin: 8mm 0 4mm;
+    font-size: 28pt;
+    color: black;   
+}
+
+.cover-page h2 {
+    margin: 0 0 14mm;
+    font-size: 13pt;
+    color: black;
+}
+
+.cover-page .confidential {
+    font-size: 9.5pt;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+}
+
+/* ===== Disclaimer page – layout & spacing (strong overrides) ===== */
+
+.disclaimer-page,
+.disclaimer-page * {
+    white-space: normal !important; /* cancel global pre-wrap to avoid weird breaks */
+}
+
+.disclaimer-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 26.5cm;
+    line-height: 1.32;
+}
+
+/* Top area with the address, aligned to the right side of the page */
+.disclaimer-header {
+    display: flex;
+    justify-content: flex-end;  
+}
+
+/* The address block itself: divider on its LEFT via border-left */
+.disclaimer-address {
+    border-left: 1px solid #222;     /* the divider */
+    padding-left: 0.6cm;             /* gap between divider and text */
+    max-width: 8.5cm;                /* keeps lines tidy */
+}
+
+.disclaimer-address h3 {
+    margin: 0 0 0.22cm 0;
+    font-weight: 600;
+}
+.disclaimer-address p {
+    margin: 0.08cm 0;   
+}
+
+/* Legal block sits at the BOTTOM of the page */
+.disclaimer-legal {
+    margin-top: 1.5cm; 
+    max-width: 15.8cm; 
+    text-align: left;
+}
+
+.disclaimer-legal p {
+    margin: 0 0 0.25cm 0; 
+}
+
+/* Optional: make sure the disclaimer page starts on a new PDF page */
+.disclaimer-page.report-section {
+    break-before: page;
+    page-break-before: always;
+    page-break-after: auto;
+    break-after: auto ;
+}
+.dc-copyright{ margin-top: 0.6cm; }
 
 
